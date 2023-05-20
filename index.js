@@ -1,4 +1,5 @@
-const changeModeText=document.querySelector("[modeText]")
+const changeModeText=document.querySelector("[modeText]");
+const root = document.documentElement.style;
 const changeModeIcon=document.querySelector("[modeIcon]");
 const noResults=document.querySelector("[noResult]");
 const input=document.querySelector("input");
@@ -16,7 +17,6 @@ const page=document.getElementById("page");
 const twitter=document.getElementById("twitter");
 const company=document.getElementById("company");
 const Error=document.querySelector("[errorMessage]");
-console.log(Error);
 let inputValue;
 let result="sahil99811";
 let url="https://api.github.com/users/"
@@ -61,11 +61,27 @@ async function fetcheData(result)
         
     }
 }
-
+const changeMode=document.getElementById("change-mode");
+const body=document.querySelector("[changeBodyColour]");
+const wrapper=document.querySelector("[wrapper]");
+changeMode.addEventListener("click",()=>{
+  const mode=changeModeText.innerText;
+  if(mode=="DARK")
+  {
+    changeModeText.innerText="LIGHT";
+    changeModeIcon.src="./images/sun-icon.svg"
+     darkModeProperties();
+  }
+  else{
+     changeModeText.innerText="DARK";
+     changeModeIcon.src="./images/moon.png"
+     lightModeProperties();
+  }
+})
 function showData(data){
     avatar.src=`${data?.avatar_url}`;
     userName.innerText=`${data?.name}`;
-    userLink.href=`${data?.url}`;
+    userLink.href=`${data?.html_url}`;
     userLink.innerText=`@${data?.login}`;
     userBio.innerText=data.bio==null?"this profile has no bio":`${data?.bio}`;
     let datesegments = data.created_at.split("T").shift().split("-");
@@ -75,9 +91,27 @@ function showData(data){
     following.textContent=`${data?.following}`;
     inputValue="";
     location1.innerText=data.location==null?"Not Available":`${data?.location}`;
-    page.innerText=data.blog!=null?"Not Available":`${data?.blog}`;
-    page.href=data.blog==null?"#":`${data?.blog}`;
-    twitter.href=data.twitter_username==null?"Not Available":`https://twitter.com/${data?.twitter_username}}`;
+    page.innerText=data.blog==""?"Not Available":`${data?.blog}`;
+    page.href=data.blog==""?"#":`${data?.blog}`;
+    twitter.innerText=data.twitter_username==null?"Not Available":`${data?.twitter_username}`;
+    twitter.href=data.twitter_username==null?"#":`https://twitter.com/${data?.twitter_username}`;
     company.innerText=data.company==null?"Not Available":`${data?.company}`;
     
 }
+function darkModeProperties() {
+    root.setProperty("--lm-bg", "#141D2F");
+    root.setProperty("--lm-bg-content", "#1E2A47");
+    root.setProperty("--lm-text", "white");
+    root.setProperty("--lm-text-alt", "white");
+    root.setProperty("--lm-shadow-xl", "rgba(70,88,109,0.15)");
+    root.setProperty("--lm-icon-bg", "brightness(1000%)");
+  
+  }
+  function lightModeProperties() {
+    root.setProperty("--lm-bg", "#F6F8FF");
+    root.setProperty("--lm-bg-content", "#FEFEFE");
+    root.setProperty("--lm-text", "#4B6A9B");
+    root.setProperty("--lm-text-alt", "#2B3442");
+    root.setProperty("--lm-shadow-xl", "rgba(70, 88, 109, 0.25)");
+    
+  }
